@@ -1,0 +1,102 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Home
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="">
+  <ion-card class="welcome-card" *ngIf="!loggedIn">
+    <ion-card-header>
+      <ion-card-title style="text-align: center;"
+        >E-Bussiness Application</ion-card-title
+      >
+    </ion-card-header>
+    <ion-card-content>
+      <div class="ion-text-center">
+        <h2 style="text-align: center;">
+          The purpose of E-Bussiness Application is to assist your shop in the
+          better way!
+        </h2>
+      </div>
+      <div class="ion-text-center">
+        <h2>You must login first!</h2>
+        <a routerLink="/login"> Login</a>|
+        <a routerLink="/register"> Register</a>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card class="home-card" *ngIf="loggedIn">
+    <ion-card-header>
+      <ion-card-title style="text-align: center;"
+        >{{department | uppercase }}</ion-card-title
+      >
+    </ion-card-header>
+    <ion-card-content>
+      <div class="ion-text-center">
+        <h2 style="text-align: center;">
+          The purpose of E-Bussiness Application is to assist your
+          {{designation}} in the better way! You can add products with there
+          name and price and other related information
+        </h2>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-toolbar *ngIf="loggedIn">
+    <ion-title>Search Products</ion-title>
+  </ion-toolbar>
+  <ion-toolbar *ngIf="loggedIn">
+    <ion-searchbar id="ion-searchbar" (ionChange)="onInput()"></ion-searchbar>
+  </ion-toolbar>
+  <div *ngIf="!loading">
+    <ion-list *ngIf="loggedIn">
+      <ion-item
+        *ngFor="let book of newdata,let i = index"
+        (click)="checkPrice(book.name,book.cprice)"
+      >
+        <ion-thumbnail slot="start">
+          <ion-img
+            *ngIf="book.image_url && book.image_url!='null'"
+            [src]="book.image_url"
+          ></ion-img>
+          <ion-img
+            *ngIf="!book.image_url ||  book.image_url=='null' "
+            [src]="'assets/icon/book.png'"
+          >
+          </ion-img>
+        </ion-thumbnail>
+        <ion-label>{{book.name | uppercase}}</ion-label>
+
+        <div>
+          <ion-label>{{book.sprice}}</ion-label>
+        </div>
+      </ion-item>
+    </ion-list>
+  </div>
+  <div *ngIf="loading">
+    <ion-list *ngIf="loggedIn">
+      <ion-item *ngFor="let item of [1,2,3,4,5]">
+        <ion-thumbnail slot="start">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-thumbnail>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 50%;"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text animated style="width: 80%;"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text animated style="width: 60%;"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">Login</ion-title>
+    <ion-back-button
+      slot="start"
+      color="light"
+      defaultHref="home"
+    ></ion-back-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="">
+  <ion-img class="image" [src]="'assets/icon/verification.PNG'"></ion-img>
+  <div class="authtext">
+    <p>OTP Verification</p>
+  </div>
+  <div class="authtext2">
+    <p>
+      We will send you <span class="span">One Time Password</span> on this
+      email.
+    </p>
+  </div>
+
+  <form [formGroup]="loginForm">
+    <ion-grid>
+      <ion-row color="justify-content-center">
+        <ion-col
+          class="ion-align-self-center"
+          size-md="6"
+          size-lg="5"
+          size-xs="12"
+        >
+          <div class="input-verify">
+            <ion-item>
+              <ion-input
+                name="verificationCode"
+                formControlName="verificationCode"
+                type="tel"
+                maxlength="6"
+                placeholder="123456"
+              ></ion-input>
+            </ion-item>
+          </div>
+          <div class="butn-verify">
+            <ion-button
+              size="large"
+              [disabled]="loginForm.invalid"
+              (click)="send()"
+              color="primary"
+              type="submit"
+              expand="block"
+              >Send Code &nbsp;<ion-spinner *ngIf="loading"></ion-spinner>
+            </ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>

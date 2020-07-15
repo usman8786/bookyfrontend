@@ -1,0 +1,54 @@
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { BookyConfig } from "../booky.config";
+import { Observable } from "rxjs";
+import { AuthService } from "../core/auth.service";
+@Injectable({
+  providedIn: "root"
+})
+export class BooksService {
+  constructor(private http: HttpClient, private authService: AuthService) {}
+
+  public async getAllBooks(): Promise<any> {
+    // this url will be the http://localhost:3000/books
+    const url = BookyConfig.getPath() + "/books";
+    const token = await this.authService.getTokenFromStorage();
+    return this.http.get(url, {
+      headers: new HttpHeaders().set("Authorization", token)
+    });
+  }
+
+  public async getBooksByUserId(id: string): Promise<any> {
+    // this url will be the http://localhost:3000/books/:id
+    const url = BookyConfig.getPath() + `/books/${id}`;
+    const token = await this.authService.getTokenFromStorage();
+    return this.http.get(url, {
+      headers: new HttpHeaders().set("Authorization", token)
+    });
+  }
+
+  public async addNewBook(data: object): Promise<any> {
+    // this url will be the http://localhost:3000/books/add
+    const url = BookyConfig.getPath() + "/books/add";
+    const token = await this.authService.getTokenFromStorage();
+    return this.http.post(url, data, {
+      headers: new HttpHeaders().set("Authorization", token)
+    });
+  }
+
+  public async deleteBook(id: string): Promise<any> {
+    const url = BookyConfig.getPath() + `/books/${id}`;
+    const token = await this.authService.getTokenFromStorage();
+    return this.http.delete(url, {
+      headers: new HttpHeaders().set("Authorization", token)
+    });
+  }
+  public async updateBook(data: object, id): Promise<any> {
+    // this url will be the http://localhost:3000/books/update
+    const url = BookyConfig.getPath() + `/books/${id}`;
+    const token = await this.authService.getTokenFromStorage();
+    return this.http.put(url, data, {
+      headers: new HttpHeaders().set("Authorization", token)
+    });
+  }
+}

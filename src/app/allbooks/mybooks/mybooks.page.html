@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">Products</ion-title>
+    <ion-button slot="end" (click)="openAddModal()" color="success">
+      Add Product
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="">
+  <div *ngIf="!loading">
+    <ion-toolbar>
+      <ion-title>Search Products</ion-title>
+    </ion-toolbar>
+    <ion-toolbar>
+      <ion-searchbar id="ion-searchbar" (ionChange)="onInput()"></ion-searchbar>
+    </ion-toolbar>
+    <ion-list>
+      <ion-item *ngFor="let book of newdata,let i = index">
+        <ion-thumbnail slot="start">
+          <ion-img
+            *ngIf="book.image_url && book.image_url!='null'"
+            [src]="book.image_url"
+          ></ion-img>
+          <ion-img
+            *ngIf="!book.image_url ||  book.image_url=='null' "
+            [src]="'assets/icon/book.png'"
+          >
+          </ion-img>
+        </ion-thumbnail>
+        <ion-label>{{book.name | uppercase}}</ion-label>
+
+        <div>
+          <ion-label>{{book.sprice}}</ion-label>
+        </div>
+
+        <ion-button fill="clear">
+          <ion-button (click)="openEditPopup(book)" fill="clear">
+            <ion-icon name="create" slot="end"></ion-icon>
+          </ion-button>
+
+          <ion-button fill="clear" color="danger" (click)="delete(book)">
+            <ion-icon name="trash" slot="end"></ion-icon>
+          </ion-button>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div *ngIf="loading">
+    <ion-list>
+      <ion-item *ngFor="let item of [1,2,3,4,5]">
+        <ion-thumbnail slot="start">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-thumbnail>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

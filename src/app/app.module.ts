@@ -16,8 +16,9 @@ import { IonicStorageModule } from "@ionic/storage";
 import { VerifyComponent } from "./verifications/verify/verify.component";
 import { ReactiveFormsModule } from "@angular/forms";
 
-// import { SocketIoModule, SocketIoConfig } from "ngx-socket-io";
-// const config: SocketIoConfig = { url: "http://localhost:3000", options: {} };
+import { SocketIoModule, SocketIoConfig } from "ngx-socket-io";
+import { PushNotificationService } from "src/sdk/custom/push-notification.service";
+const config: SocketIoConfig = { url: "http://localhost:3000", options: {} };
 
 @NgModule({
   declarations: [AppComponent, VerifyComponent],
@@ -29,10 +30,11 @@ import { ReactiveFormsModule } from "@angular/forms";
     ReactiveFormsModule,
     IonicStorageModule.forRoot(),
     AppRoutingModule,
-    // SocketIoModule.forRoot(config),
+    SocketIoModule.forRoot(config),
   ],
   providers: [
     StatusBar,
+    PushNotificationService,
     SplashScreen,
     {
       provide: HTTP_INTERCEPTORS,

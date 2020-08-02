@@ -25,7 +25,8 @@
       </div>
       <div class="ion-text-center">
         <h2>You must login first!</h2>
-        <a routerLink="/login"> Login</a>|
+        <a routerLink="/login"> Login</a>
+        |
         <a routerLink="/register"> Register</a>
       </div>
     </ion-card-content>
@@ -34,8 +35,8 @@
   <ion-card class="home-card" *ngIf="loggedIn">
     <ion-card-header>
       <ion-card-title style="text-align: center;"
-        >{{department | uppercase }}</ion-card-title
-      >
+        >{{department | uppercase }} {{designation | uppercase }}
+      </ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <div class="ion-text-center">

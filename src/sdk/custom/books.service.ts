@@ -1,10 +1,9 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { BookyConfig } from "../booky.config";
-import { Observable } from "rxjs";
 import { AuthService } from "../core/auth.service";
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class BooksService {
   constructor(private http: HttpClient, private authService: AuthService) {}
@@ -14,7 +13,7 @@ export class BooksService {
     const url = BookyConfig.getPath() + "/books";
     const token = await this.authService.getTokenFromStorage();
     return this.http.get(url, {
-      headers: new HttpHeaders().set("Authorization", token)
+      headers: new HttpHeaders().set("Authorization", token),
     });
   }
 
@@ -23,7 +22,7 @@ export class BooksService {
     const url = BookyConfig.getPath() + `/books/${id}`;
     const token = await this.authService.getTokenFromStorage();
     return this.http.get(url, {
-      headers: new HttpHeaders().set("Authorization", token)
+      headers: new HttpHeaders().set("Authorization", token),
     });
   }
 
@@ -32,7 +31,7 @@ export class BooksService {
     const url = BookyConfig.getPath() + "/books/add";
     const token = await this.authService.getTokenFromStorage();
     return this.http.post(url, data, {
-      headers: new HttpHeaders().set("Authorization", token)
+      headers: new HttpHeaders().set("Authorization", token),
     });
   }
 
@@ -40,7 +39,7 @@ export class BooksService {
     const url = BookyConfig.getPath() + `/books/${id}`;
     const token = await this.authService.getTokenFromStorage();
     return this.http.delete(url, {
-      headers: new HttpHeaders().set("Authorization", token)
+      headers: new HttpHeaders().set("Authorization", token),
     });
   }
   public async updateBook(data: object, id): Promise<any> {
@@ -48,7 +47,7 @@ export class BooksService {
     const url = BookyConfig.getPath() + `/books/${id}`;
     const token = await this.authService.getTokenFromStorage();
     return this.http.put(url, data, {
-      headers: new HttpHeaders().set("Authorization", token)
+      headers: new HttpHeaders().set("Authorization", token),
     });
   }
 }

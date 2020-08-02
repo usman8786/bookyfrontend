@@ -36,10 +36,8 @@ export class HomePage {
     private booksService: BooksService,
     private alertController: AlertController,
     private authService: AuthService,
-    private platform: Platform
-  ) // private socket: Socket,
-  // private toastCtrl: ToastController
-  {
+    private platform: Platform // private socket: Socket, // private toastCtrl: ToastController
+  ) {
     route.queryParams.subscribe((params) => {
       console.log("params", params);
       if (params.logout) {

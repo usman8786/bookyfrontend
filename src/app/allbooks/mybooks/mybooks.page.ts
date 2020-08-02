@@ -4,14 +4,17 @@ import { Router } from "@angular/router";
 import { BooksService } from "src/sdk/custom/books.service";
 import * as decode from "jwt-decode";
 import { Storage } from "@ionic/storage";
-import { AlertController, ModalController } from "@ionic/angular";
+import {
+  AlertController,
+  ModalController,
+  ToastController,
+} from "@ionic/angular";
 import { AddnewbookComponent } from "../addnewbook/addnewbook.component";
-import { async } from "@angular/core/testing";
-
+import { Socket } from "ngx-socket-io";
 @Component({
   selector: "app-mybooks",
   templateUrl: "./mybooks.page.html",
-  styleUrls: ["./mybooks.page.scss"]
+  styleUrls: ["./mybooks.page.scss"],
 })
 export class MybooksPage implements OnInit {
   loading = false;
@@ -21,16 +24,67 @@ export class MybooksPage implements OnInit {
   dataa: any;
   newdata: Books[];
 
+  message = "";
+  messages = [];
+  currentUser = "";
   constructor(
     private authService: AuthService,
     private router: Router,
     private booksService: BooksService,
     private storage: Storage,
     private alertController: AlertController,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private socket: Socket,
+    private toastCtrl: ToastController
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    const token = this.storage.get("token");
+    console.log("got", token);
+    if (token) {
+      console.log("if");
+
+      this.socket.connect();
+      let name = `user-${new Date().getTime()}`;
+      this.currentUser = name;
+      this.socket.emit("set-name", name);
+      this.socket.fromEvent("users-changed").subscribe((data) => {
+        let user = data["user"];
+        if (data["event"] === "left") {
+          this.showToast("User left: " + user);
+        } else {
+          this.showToast("User joined: " + user);
+          console.log(user);
+        }
+      });
+      this.socket.fromEvent("message").subscribe((message) => {
+        this.messages.push(message);
+      });
+
+      this.socket.on("status", (next) => {
+        console.log("status", next);
+      });
+    }
+  }
+  sendMessage() {
+    const owner = "accepted";
+    console.log("sent");
+    this.socket.emit("send-message", owner);
+  }
+
+  ionViewWillLeave() {
+    this.socket.disconnect();
+  }
+
+  async showToast(msg) {
+    let toast = await this.toastCtrl.create({
+      message: msg,
+      position: "top",
+      duration: 2000,
+    });
+    toast.present();
+  }
+
   ionViewWillEnter() {
     this.getBooksByUserId();
   }
@@ -45,7 +99,7 @@ export class MybooksPage implements OnInit {
 
     const observable = await this.booksService.getBooksByUserId(id);
     observable.subscribe(
-      data => {
+      (data) => {
         this.books = data.data;
         this.newdata = this.books;
         this.loading = false;
@@ -55,7 +109,7 @@ export class MybooksPage implements OnInit {
         this.authService.getBookFromStorage();
         console.log("got response from server", data);
       },
-      async error => {
+      async (error) => {
         var localData = await this.authService.getBookFromStorage();
         this.dataa = localData;
         console.log("error block", this.dataa);
@@ -69,7 +123,7 @@ export class MybooksPage implements OnInit {
     const searchbar = (<HTMLInputElement>(
       document.getElementById("ion-searchbar")
     )).value;
-    this.newdata = this.dataa.filter(item => {
+    this.newdata = this.dataa.filter((item) => {
       return item.name.toLowerCase().indexOf(searchbar.toLowerCase()) > -1;
     });
   }
@@ -77,9 +131,9 @@ export class MybooksPage implements OnInit {
   async openAddModal(book?: Books) {
     const modal = await this.modalController.create({
       component: AddnewbookComponent,
-      componentProps: { book }
+      componentProps: { book },
     });
-    modal.onDidDismiss().then(data => {
+    modal.onDidDismiss().then((data) => {
       //  this.getAll();
       this.getBooksByUserId();
     });
@@ -101,15 +155,15 @@ export class MybooksPage implements OnInit {
           cssClass: "secondary",
           handler: () => {
             console.log("Cancel");
-          }
+          },
         },
         {
           text: "Delete",
           handler: () => {
             this.deleteBook();
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
     await alert.present();
   }
@@ -121,18 +175,18 @@ export class MybooksPage implements OnInit {
       this.selectedBook._id
     );
     observable.subscribe(
-      data => {
+      (data) => {
         console.log("got response from server", data);
         this.deleteLoading = false;
         //this.getAll();
         this.getBooksByUserId();
       },
-      async error => {
+      async (error) => {
         this.deleteLoading = false;
         const alert = await this.alertController.create({
           header: "No internet service available!",
           message: "Please check your internet service.",
-          buttons: ["Okay"]
+          buttons: ["Okay"],
         });
 
         await alert.present();

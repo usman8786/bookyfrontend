@@ -39,7 +39,6 @@ export class HomePage {
     private platform: Platform // private socket: Socket, // private toastCtrl: ToastController
   ) {
     route.queryParams.subscribe((params) => {
-      console.log("params", params);
       if (params.logout) {
         this.setToken();
         this.removeQueryParams();

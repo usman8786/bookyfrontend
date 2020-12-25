@@ -2,7 +2,6 @@ import { NgModule } from "@angular/core";
 import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
 import { IsLoginGuard } from "src/sdk/custom/guards/islogin.guard";
 import { RedirectLoginGuard } from "src/sdk/custom/guards/redirectlogin.guard";
-import { VerifyComponent } from "./verifications/verify/verify.component";
 
 const routes: Routes = [
   {
@@ -15,7 +14,6 @@ const routes: Routes = [
     loadChildren: () =>
       import("./home/home.module").then((m) => m.HomePageModule),
   },
-
   {
     path: "login",
     canActivate: [RedirectLoginGuard],
@@ -41,15 +39,7 @@ const routes: Routes = [
       import("./allbooks/mybooks/mybooks.module").then(
         (m) => m.MybooksPageModule
       ),
-  },
-  {
-    path: "verifications",
-    loadChildren: () =>
-      import("./verifications/verifications.module").then(
-        (m) => m.VerificationsPageModule
-      ),
-  },
-  { path: "verify/:id", component: VerifyComponent },
+  }
 ];
 
 @NgModule({

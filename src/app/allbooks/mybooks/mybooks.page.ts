@@ -10,7 +10,7 @@ import {
   ToastController,
 } from "@ionic/angular";
 import { AddnewbookComponent } from "../addnewbook/addnewbook.component";
-import { Socket } from "ngx-socket-io";
+
 @Component({
   selector: "app-mybooks",
   templateUrl: "./mybooks.page.html",
@@ -34,56 +34,15 @@ export class MybooksPage implements OnInit {
     private storage: Storage,
     private alertController: AlertController,
     private modalController: ModalController,
-    private socket: Socket,
     private toastCtrl: ToastController
   ) {}
 
   ngOnInit() {
     const token = this.storage.get("token");
     console.log("got", token);
-    if (token) {
-      console.log("if");
-
-      this.socket.connect();
-      let name = `user-${new Date().getTime()}`;
-      this.currentUser = name;
-      this.socket.emit("set-name", name);
-      this.socket.fromEvent("users-changed").subscribe((data) => {
-        let user = data["user"];
-        if (data["event"] === "left") {
-          this.showToast("User left: " + user);
-        } else {
-          this.showToast("User joined: " + user);
-          console.log(user);
-        }
-      });
-      this.socket.fromEvent("message").subscribe((message) => {
-        this.messages.push(message);
-      });
-
-      this.socket.on("status", (next) => {
-        console.log("status", next);
-      });
-    }
+   
   }
-  sendMessage() {
-    const owner = "accepted";
-    console.log("sent");
-    this.socket.emit("send-message", owner);
-  }
-
-  ionViewWillLeave() {
-    this.socket.disconnect();
-  }
-
-  async showToast(msg) {
-    let toast = await this.toastCtrl.create({
-      message: msg,
-      position: "top",
-      duration: 2000,
-    });
-    toast.present();
-  }
+  
 
   ionViewWillEnter() {
     this.getBooksByUserId();

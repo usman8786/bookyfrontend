@@ -1,18 +1,17 @@
-import { Component, OnInit } from "@angular/core";
-import { FormBuilder, Validators } from "@angular/forms";
-import { FormGroup } from "@angular/forms";
-import { UserService } from "src/sdk/custom/user.service";
-import { Router } from "@angular/router";
-import { AuthService } from "src/sdk/core/auth.service";
-import { ToastController } from "@ionic/angular";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
+import { AuthService } from 'src/sdk/core/auth.service';
+import { UserService } from 'src/sdk/custom/user.service';
 import { Storage } from "@ionic/storage";
 
 @Component({
-  selector: "app-login",
-  templateUrl: "./login.page.html",
-  styleUrls: ["./login.page.scss"],
+  selector: 'app-namechange',
+  templateUrl: './namechange.page.html',
+  styleUrls: ['./namechange.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class NamechangePage implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
@@ -21,7 +20,7 @@ export class LoginPage implements OnInit {
     private toastCtrl: ToastController,
     private storage: Storage
   ) {}
-  loginForm: FormGroup;
+  changePasswordForm: FormGroup;
   loading = false;
 
   ngOnInit() {
@@ -30,7 +29,7 @@ export class LoginPage implements OnInit {
 
 
   formInitializer() {
-    this.loginForm = this.formBuilder.group({
+    this.changePasswordForm = this.formBuilder.group({
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required]],
     });
@@ -38,9 +37,9 @@ export class LoginPage implements OnInit {
 
   save() {
     this.loading = true;
-    const loginData = this.loginForm.value;
+    const loginData = this.changePasswordForm.value;
 
-    const obj = this.loginForm.value;
+    const obj = this.changePasswordForm.value;
     obj["email"] = obj.email.toLowerCase();
 
     this.userService.userLogin(loginData).subscribe(

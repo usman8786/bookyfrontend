@@ -19,6 +19,11 @@ export class AppComponent {
       title: "Home",
       url: "/home",
       icon: "home",
+    }, 
+    {
+      title: "Account",
+      url: "/myaccount",
+      icon: "settings",
     },
     {
       title: "Products",
@@ -30,6 +35,7 @@ export class AppComponent {
       icon: "power",
     },
   ];
+  email:any;
   loggedIn: boolean;
   name: any;
   ibn: any;
@@ -68,6 +74,8 @@ export class AppComponent {
     this.storage.get("token").then((res) => {
       const decodedToken = decode(res);
       const username = decodedToken.data.name;
+      const userEmail = decodedToken.data.email;
+      this.email = userEmail;
       this.name = username;
     });
   }

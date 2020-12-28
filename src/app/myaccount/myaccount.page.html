@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">Account Settings</ion-title>
+    <ion-back-button
+      slot="start"
+      color="light"
+      defaultHref="home"
+    ></ion-back-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="">
+  <ion-list>
+    <ion-item>
+      <ion-icon  slot="start" name="person"></ion-icon>
+      <ion-label *ngIf="loggedIn" routerLink="/myaccount/namechange">
+        <h2>General</h2>
+        <p>{{ name | uppercase }}</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon  slot="start" name="lock" ></ion-icon>
+      <ion-label *ngIf="loggedIn" routerLink="/myaccount/password-change">
+        <h2>Security</h2>
+        <p>Change Password</p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-icon  slot="start" name="mail" ></ion-icon>
+      <ion-label *ngIf="loggedIn" routerLink="/myaccount/email-change">
+        <h2>Email address</h2>
+        <p>{{ email }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -57,10 +57,8 @@ export class RegisterPage implements OnInit {
 
     this.userService.userRegister(this.registerForm.value).subscribe(
       async (data) => {
-        console.log("got response from server", data);
         this.loading = false;
         await this.authService.saveTokenToStorage(data.token);
-        console.log("data.token", data.token);
 
         this.setToken();
         this.registerForm.reset();

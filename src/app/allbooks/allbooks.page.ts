@@ -67,7 +67,6 @@ export class BooksPage implements OnInit {
     data =>{    
     this.books = data.data.docs;
     this.loading = false;
-    console.log('got response from server', data);
     },
     error =>{
       this.loading =false;

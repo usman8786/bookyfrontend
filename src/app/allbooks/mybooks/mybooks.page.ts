@@ -39,8 +39,6 @@ export class MybooksPage implements OnInit {
 
   ngOnInit() {
     const token = this.storage.get("token");
-    console.log("got", token);
-   
   }
   
 
@@ -64,14 +62,11 @@ export class MybooksPage implements OnInit {
         this.loading = false;
         this.dataa = data.data;
         this.authService.saveBookToStorage(this.dataa);
-        console.log(this.dataa);
         this.authService.getBookFromStorage();
-        console.log("got response from server", data);
       },
       async (error) => {
         var localData = await this.authService.getBookFromStorage();
         this.dataa = localData;
-        console.log("error block", this.dataa);
         this.newdata = localData;
         this.loading = false;
         console.log("error", error);
@@ -135,7 +130,6 @@ export class MybooksPage implements OnInit {
     );
     observable.subscribe(
       (data) => {
-        console.log("got response from server", data);
         this.deleteLoading = false;
         //this.getAll();
         this.getBooksByUserId();

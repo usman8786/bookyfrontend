@@ -7,36 +7,35 @@
         </ion-toolbar>
       </ion-header>
       <ion-content>
-        <br />
-        <ion-list class="ion-text-center" *ngIf="loggedIn">
-          <ion-label>
-            {{ name | uppercase }}
-          </ion-label>
-        </ion-list>
+        <ion-card text-center class="hide-card" *ngIf="loggedIn">
+          <img class="image" src="https://media.istockphoto.com/vectors/default-profile-picture-avatar-photo-placeholder-vector-illustration-vector-id1214428300?b=1&k=6&m=1214428300&s=612x612&w=0&h=kMXMpWVL6mkLu0TN-9MJcEUx1oSWgUq8-Ny6Wszv_ms=" />
+          <h2>{{ name | uppercase }}</h2>
+          <p>{{ email }}</p>
+          <hr>
+      </ion-card>
         <ion-list>
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-            <ion-item
-              *ngIf="p?.title !== 'Logout' && p?.title !== 'My Books'"
-              [routerDirection]="'root'"
-              [routerLink]="[p.url]"
-            >
-              <ion-icon slot="start" *ngIf="p?.icon" [name]="p.icon"></ion-icon>
-              <ion-label>
-                {{ p.title }}
-              </ion-label>
-            </ion-item>
 
             <ion-item
-              *ngIf="loggedIn && p?.title == 'My Books'"
-              [routerDirection]="'root'"
-              [routerLink]="[p.url]"
-            >
-              <ion-icon *ngIf="p?.icon" slot="start" [name]="p.icon"></ion-icon>
-              <ion-label>
-                {{ p.title }}
-              </ion-label>
-            </ion-item>
-
+            *ngIf="!loggedIn && p?.title !== 'Logout' && p?.title !== 'Account' && p?.title !== 'Products'"
+            [routerDirection]="'root'"
+            [routerLink]="[p.url]"
+          >
+            <ion-icon slot="start" *ngIf="p?.icon" [name]="p.icon"></ion-icon>
+            <ion-label>
+              {{ p.title }}
+            </ion-label>
+          </ion-item>
+          <ion-item
+            *ngIf="loggedIn && p?.title !== 'Logout' "
+            [routerDirection]="'root'"
+            [routerLink]="[p.url]"
+          >
+            <ion-icon slot="start" *ngIf="p?.icon" [name]="p.icon"></ion-icon>
+            <ion-label>
+              {{ p.title }}
+            </ion-label>
+          </ion-item>
             <ion-item
               (click)="logout()"
               *ngIf="loggedIn && p?.title == 'Logout'"
@@ -46,6 +45,7 @@
                 {{ p.title }}
               </ion-label>
             </ion-item>
+            
           </ion-menu-toggle>
         </ion-list>
       </ion-content>

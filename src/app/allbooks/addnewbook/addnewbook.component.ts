@@ -37,14 +37,13 @@ export class AddnewbookComponent implements OnInit {
   async ngOnInit() {
     this.formInitializer();
     if (this.book) {
-      console.log("got book", this.book);
+
       this.addNewBookForm.patchValue(this.book);
     }
     var data = await this.authService.getBookFromStorage();
     if (data) {
       this.dataArray = data;
     }
-    console.log(this.dataArray);
   }
 
   formInitializer() {
@@ -73,7 +72,6 @@ export class AddnewbookComponent implements OnInit {
     );
     observable.subscribe(
       async data => {
-        console.log("got response from server", data);
         const name = this.addNewBookForm.controls["name"].value;
         const toast = await this.toastController.create({
           message: `${name} has been updated successfully.`,
@@ -109,8 +107,6 @@ export class AddnewbookComponent implements OnInit {
           duration: 3500
         });
         this.loading = false;
-
-        console.log(data.result);
         this.dataArray.push(data.result);
 
         this.booksService.addNewBook(obj);
@@ -129,7 +125,6 @@ export class AddnewbookComponent implements OnInit {
 
         await alert.present();
         this.loading = false;
-        console.log("error", error);
       }
     );
   }

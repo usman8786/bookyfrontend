@@ -23,7 +23,7 @@ export class HomePage {
   department: any;
   designation: any;
   subscription: any;
-
+  verifiedEmail:any
   message = "";
   messages = [];
   currentUser = "";
@@ -45,7 +45,7 @@ export class HomePage {
       }
     });
   }
-
+ 
   removeQueryParams() {
     // Remove query params
     this.router.navigate([], {
@@ -58,7 +58,9 @@ export class HomePage {
   }
   ionViewWillEnter() {
     this.setToken();
+    this.getEmail();
     this.getBooksByUserId();
+
   }
   ionViewDidEnter() {
     this.subscription = this.platform.backButton.subscribe(() => {
@@ -84,9 +86,7 @@ export class HomePage {
         this.loading = false;
         this.dataa = data.data;
         this.authService.saveBookToStorage(this.dataa);
-        console.log(this.dataa);
         this.authService.getBookFromStorage();
-        console.log("got response from server", data);
       },
       async (error) => {
         var localData = await this.authService.getBookFromStorage();
@@ -108,7 +108,21 @@ export class HomePage {
 
     await alert.present();
   }
-
+  getEmail(){
+    try {
+      this.storage.get("token").then((res) => {
+        const decodedToken = decode(res);
+        const checkEmail = decodedToken.data.verifiedEmail;
+        if (checkEmail==true) {   
+          this.verifiedEmail=true
+        }else{
+          this.verifiedEmail=false
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
   onInput() {
     const searchbar = (<HTMLInputElement>(
       document.getElementById("ion-searchbar")
@@ -130,6 +144,18 @@ export class HomePage {
       const des = decodedToken.data.designation;
       this.designation = des;
     });
+  }
+  sendEmail(){
+    try {
+      this.storage.get("token").then((res) => {
+        const decodedToken = decode(res);
+        const checkEmail = decodedToken.data.verifiedEmail;
+        this.verifiedEmail = checkEmail;
+  
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   setToken() {

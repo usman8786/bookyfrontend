@@ -39,6 +39,10 @@ const routes: Routes = [
       import("./allbooks/mybooks/mybooks.module").then(
         (m) => m.MybooksPageModule
       ),
+  },
+  {
+    path: 'myaccount',
+    loadChildren: () => import('./myaccount/myaccount.module').then( m => m.MyaccountPageModule)
   }
 ];
 

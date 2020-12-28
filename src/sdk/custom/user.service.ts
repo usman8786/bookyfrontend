@@ -11,6 +11,10 @@ export class UserService {
     const url = BookyConfig.getPath() + "/users/login";
     return this.http.post(url, credentials);
   }
+  public userChanges(data: object, id): Observable<any> {
+    const url = BookyConfig.getPath() + `/users/${id}`;
+    return this.http.put(url, data);
+  }
   public sendEmail(credentials: object): Observable<any> {
     const url = BookyConfig.getPath() + "/users/send_email";
     return this.http.post(url, credentials);

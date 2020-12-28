@@ -5,6 +5,7 @@ import { ToastController } from '@ionic/angular';
 import { AuthService } from 'src/sdk/core/auth.service';
 import { UserService } from 'src/sdk/custom/user.service';
 import { Storage } from "@ionic/storage";
+import * as decode from "jwt-decode";
 
 @Component({
   selector: 'app-namechange',
@@ -22,37 +23,31 @@ export class NamechangePage implements OnInit {
   ) {}
   changePasswordForm: FormGroup;
   loading = false;
-
+    id:any
   ngOnInit() {
     this.formInitializer();
   }
-
-
   formInitializer() {
     this.changePasswordForm = this.formBuilder.group({
-      email: [null, [Validators.required, Validators.email]],
-      password: [null, [Validators.required]],
+      name: [null, [Validators.required]]
     });
   }
-
-  save() {
+ async save() {
     this.loading = true;
-    const loginData = this.changePasswordForm.value;
-
-    const obj = this.changePasswordForm.value;
-    obj["email"] = obj.email.toLowerCase();
-
-    this.userService.userLogin(loginData).subscribe(
+    const data = this.changePasswordForm.value;
+    const result = await this.storage.get("token")
+      const decodedToken = decode(result);
+      const userId = decodedToken.data._id;
+      this.id = userId;
+    this.userService.userChanges(data,this.id).subscribe(
       async (data) => {
         this.loading = false;
-        await this.authService.saveTokenToStorage(data.token);
-        this.router.navigate(["/home"], { queryParams: { login: true } });
+        this.router.navigate(["/home"]);
         this.ngOnInit();
       },
       (error) => {
         this.loading = false;
         console.log(error);
-      
       }
     );
   }

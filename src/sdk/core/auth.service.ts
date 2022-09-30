@@ -14,7 +14,9 @@ export class AuthService {
   public async saveTokenToStorage(token: string) {
     return await this.storage.set("token", token);
   }
-
+  public async saveNameToStorage(name: string) {
+      return await this.storage.set("name", name);
+  }
   public async getTokenFromStorage() {
     return await this.storage.get("token");
   }

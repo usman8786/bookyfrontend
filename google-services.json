@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "180293771133",
+    "project_id": "bookynotify",
+    "storage_bucket": "bookynotify.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:180293771133:android:2d742f21a8d3ff94f2b614",
+        "android_client_info": {
+          "package_name": "com.mycompany.bookyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "180293771133-qskb6ek3tbeg638qpp85qi24r6s44gdh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARAji6Np8_FDPQOo5mrrgCSDhqNhz_amA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "180293771133-qskb6ek3tbeg638qpp85qi24r6s44gdh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

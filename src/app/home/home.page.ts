@@ -131,20 +131,20 @@ export class HomePage {
       return item.name.toLowerCase().indexOf(searchbar.toLowerCase()) > -1;
     });
   }
-  getUserDepartment() {
-    this.storage.get("token").then((res) => {
-      const decodedToken = decode(res);
-      const dept = decodedToken.data.department;
-      this.department = dept;
-    });
-  }
-  getUserDesignation() {
-    this.storage.get("token").then((res) => {
-      const decodedToken = decode(res);
-      const des = decodedToken.data.designation;
-      this.designation = des;
-    });
-  }
+  // getUserDepartment() {
+  //   this.storage.get("token").then((res) => {
+  //     const decodedToken = decode(res);
+  //     const dept = decodedToken.data.department;
+  //     this.department = dept;
+  //   });
+  // }
+  // getUserDesignation() {
+  //   this.storage.get("token").then((res) => {
+  //     const decodedToken = decode(res);
+  //     const des = decodedToken.data.designation;
+  //     this.designation = des;
+  //   });
+  // }
   sendEmail(){
     try {
       this.storage.get("token").then((res) => {
@@ -162,9 +162,12 @@ export class HomePage {
     try {
       const token = this.storage.get("token").then((token) => {
         if (token) {
-          this.loggedIn = true;
-          this.getUserDepartment();
-          this.getUserDesignation();
+            this.loggedIn = true;
+            const decodedToken = decode(token);
+            this.department  = decodedToken.data.department;
+            this.designation = decodedToken.data.designation; 
+          // this.getUserDepartment();
+          // this.getUserDesignation();
         } else {
           this.loggedIn = false;
         }

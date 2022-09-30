@@ -6,6 +6,7 @@ import { Router } from "@angular/router";
 import { AuthService } from "src/sdk/core/auth.service";
 import { ToastController } from "@ionic/angular";
 import { Storage } from "@ionic/storage";
+import * as decode from "jwt-decode";
 
 @Component({
   selector: "app-login",
@@ -47,6 +48,14 @@ export class LoginPage implements OnInit {
       async (data) => {
         this.loading = false;
         await this.authService.saveTokenToStorage(data.token);
+        this.storage.get("token").then(async (token) => {
+          const decodedToken = decode(token);
+          console.log("login", decodedToken);
+          
+          const username = decodedToken.data.name
+          await this.authService.saveNameToStorage(username);
+        })
+
         this.router.navigate(["/home"], { queryParams: { login: true } });
         this.ngOnInit();
       },

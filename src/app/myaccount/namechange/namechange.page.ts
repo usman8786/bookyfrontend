@@ -34,14 +34,17 @@ export class NamechangePage implements OnInit {
   }
  async save() {
     this.loading = true;
-    const data = this.changePasswordForm.value;
+    const formdata = this.changePasswordForm.value;
     const result = await this.storage.get("token")
       const decodedToken = decode(result);
       const userId = decodedToken.data._id;
       this.id = userId;
-    this.userService.userChanges(data,this.id).subscribe(
+    this.userService.userChanges(formdata,this.id).subscribe(
       async (data) => {
         this.loading = false;
+        console.log("data change", formdata.name);
+        
+        await this.storage.set("name", formdata.name);
         this.router.navigate(["/home"]);
         this.ngOnInit();
       },

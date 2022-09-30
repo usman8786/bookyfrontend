@@ -6,6 +6,7 @@ import { AuthService } from "src/sdk/core/auth.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { Storage } from "@ionic/storage";
 import * as decode from "jwt-decode";
+import { FCM } from "cordova-plugin-fcm-with-dependecy-updated/ionic/ngx";
 
 
 @Component({
@@ -49,10 +50,12 @@ export class AppComponent {
     private router: Router,
     private storage: Storage,
     private route: ActivatedRoute,
+    private fcm: FCM
 
   ) {
     this.initializeApp();
     this.setToken();
+    this.getUserName()
     route.queryParams.subscribe((params) => {
       if (params.login) {
         this.setToken();
@@ -61,7 +64,9 @@ export class AppComponent {
   }
 
   ionViewWillEnter() {
-    this.setToken();
+    // this.setToken();
+    this.getUserName()
+
   }
 
   logout() {
@@ -71,19 +76,77 @@ export class AppComponent {
   }
 
   getUserName() {
-    this.storage.get("token").then((res) => {
-      const decodedToken = decode(res);
-      const username = decodedToken.data.name;
-      const userEmail = decodedToken.data.email;
-      this.email = userEmail;
-      this.name = username;
+    this.storage.get("name").then((name) => {
+      this.name = name;
     });
   }
 
   initializeApp() {
+    this.getUserName()
+
+    if (this.platform.is('cordova')) {
+      this.platform.ready().then(() => {
+        this.statusBar.styleDefault();
+        this.splashScreen.hide();  
+        // get FCM token
+        this.fcm.getToken().then(token => {
+          console.log(token);
+        });
+  
+        // ionic push notification example
+        this.fcm.onNotification().subscribe(data => {
+          console.log(data);
+          if (data.wasTapped) {
+            console.log('Received in background');
+          } else {
+            console.log('Received in foreground');
+          }
+        });      
+  
+        // refresh the FCM token
+        this.fcm.onTokenRefresh().subscribe(token => {
+          console.log(token);
+        });
+  
+      });
+    } else {
+      console.log("browser");
+      
+      // You're testing in browser, do nothing or mock the plugins' behaviour.
+      //
+      // var url: string = 'assets/mock-images/image.jpg';
+    }
+
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+
+      // subscribe to a topic
+      // this.fcm.subscribeToTopic('Deals');
+
+      // get FCM token
+      this.fcm.getToken().then(token => {
+        console.log(token);
+      });
+
+      // ionic push notification example
+      this.fcm.onNotification().subscribe(data => {
+        console.log(data);
+        if (data.wasTapped) {
+          console.log('Received in background');
+        } else {
+          console.log('Received in foreground');
+        }
+      });      
+
+      // refresh the FCM token
+      this.fcm.onTokenRefresh().subscribe(token => {
+        console.log(token);
+      });
+
+      // unsubscribe from a topic
+      // this.fcm.unsubscribeFromTopic('offers');
+
     });
   }
 
